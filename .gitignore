@@ -10,3 +10,6 @@ Backend/src/node_modules
 node_modules
 Frontend/.svelte-kit/dev
 Frontend/.svelte-kit/
+
+compose.yml
+docker-compose.yml
