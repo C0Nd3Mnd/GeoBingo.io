@@ -2,15 +2,16 @@ import { gamePhases } from "../../helpers/variables";
 import Score from "./Score";
 import Capture from "./Capture";
 import schedule from "node-schedule";
-import { getRandomWords, getRandomWordNotInWordList } from "../../helpers/words";
+import {
+  getRandomWords,
+  getRandomWordNotInWordList,
+} from "../../helpers/words";
 import { checkLatLangPointisInCountry } from "../../helpers/countryValidator";
 import _ from "lodash";
 import Player from "./../Player";
 import { Pano } from "../../types";
 import BaseGame from "./../BaseGame";
-import {
-  reportWord as reportWordApi,
-} from "../../helpers/api";
+import { reportWord as reportWordApi } from "../../helpers/api";
 type Word = {
   word: string;
   tags: string[];
@@ -25,9 +26,10 @@ export default class Game extends BaseGame {
   captures: Capture[] = [];
   words: Word[] = [];
   size = 100;
-  lng = "en"
+  lng = "en";
   suggestedWords: SuggestedWord[] = [];
-  restriction: null | { key: string, val: string, lat: string, lng: string } = null;
+  restriction: null | { key: string; val: string; lat: string; lng: string } =
+    null;
   score = new Score();
   host: Player;
   wordsDisabled = false;
@@ -40,13 +42,13 @@ export default class Game extends BaseGame {
     super(roomName, privateLobby);
     this.host = host;
     this.players.add(host);
-    this.words = getRandomWords(5);
+    this.words = [];
   }
 
   reportWord(i: number) {
     if (this.words[i]) {
-      console.log("report: ", this.words[i])
-      reportWordApi(JSON.stringify(this.words[i].word))
+      console.log("report: ", this.words[i]);
+      reportWordApi(JSON.stringify(this.words[i].word));
     }
   }
   newRandomWord(i: number) {
@@ -130,7 +132,6 @@ export default class Game extends BaseGame {
     if (!(await this.checkPanoIsValidCountry(pano))) {
       return "fail";
     }
-
 
     if (this.gamePhase !== gamePhases.INGAME) {
       return "fail";
@@ -238,12 +239,17 @@ export default class Game extends BaseGame {
     return this.playersKicked.has(player);
   }
 
-  changeRestriction(data: { key: string, val: string, lat: string, lng: string }) {
+  changeRestriction(data: {
+    key: string;
+    val: string;
+    lat: string;
+    lng: string;
+  }) {
     this.restriction = data;
     this.updateLobby();
   }
   changeLang(lng: string) {
-    console.log("changing language to:", lng)
+    console.log("changing language to:", lng);
     this.lng = lng;
     this.updateLobby();
   }
@@ -299,15 +305,14 @@ export default class Game extends BaseGame {
     return JSON.parse(JSON.stringify(this.words)).map((word: Word) => {
       if (typeof word.word !== "string") {
         if (word.word[this.lng]) {
-          word.word = word.word[this.lng]
-          return word
+          word.word = word.word[this.lng];
+          return word;
         }
       }
 
-      return word
-
-    })
-  }
+      return word;
+    });
+  };
 
   toGameState() {
     type State = {
@@ -325,7 +330,12 @@ export default class Game extends BaseGame {
       onlyOfficialCoverage?: boolean;
       title?: string;
       suggestedWords?: { word: string; playerName: string }[];
-      restriction?: null | { key: string, val: string, lat: string, lng: string };
+      restriction?: null | {
+        key: string;
+        val: string;
+        lat: string;
+        lng: string;
+      };
       captureIndex?: number;
       gameEndTime?: string;
       captures?: any[];
@@ -422,5 +432,4 @@ export default class Game extends BaseGame {
     this.addCustomWordToGame(newWord);
     // no update lobby bc addCustomWord already calls it
   }
-
 }

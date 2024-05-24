@@ -151,28 +151,7 @@
       <div class="card bg-base-100 bordered shadow-lg">
         <div class="card-body">
           <h3 class="card-title flex flex-wrap">
-            Words {words.length}
-            {#if isHost}
-              <button
-                class=" btn btn-secondary"
-                on:click={() => lobby.newRandomWords(lockedWords)}
-                >randomize all words</button
-              >
-              <select
-                on:change={(e) => api.game.settings.changeLang(e.target.value)}
-                class="select uppercase w-full max-w-xs border-2 border-black"
-              >
-                <option disabled selected>Pick your language</option>
-                <option value="en">English</option>
-                <option value="nl">Dutch</option>
-                <option value="es">Spanish</option>
-                <option value="de">German</option>
-                <option value="fr">french</option>
-                <option value="pl">polish</option>
-                <option value="pt">portuguese</option>
-                <option value="id">indonesian</option>
-              </select>
-            {/if}
+            Words ({words.length})
           </h3>
           <!-- <ul use:autoAnimate> -->
           <ul>
@@ -227,49 +206,6 @@
                   />
 
                   {#if isHost}
-                    <div class="tooltip" data-tip="get a random new word">
-                      <button
-                        class=" btn btn-secondary"
-                        on:click={() => lobby.newRandomWord(i)}
-                        disabled={isLockedWord[i]}
-                        ><ShuffleIcon size="1x" /></button
-                      >
-                    </div>
-                    {#if true}
-                      <div
-                        class="tooltip"
-                        data-tip="save in database for other people"
-                      >
-                        <button
-                          class=" btn btn-primary"
-                          on:click={() => (addWordModal = word.word)}
-                          disabled={isLockedWord[i]}
-                          ><Share2Icon size="1x" /></button
-                        >
-                      </div>
-                    {/if}
-
-                    <div class="tooltip" data-tip="report this word">
-                      <button
-                        class=" btn btn-warning"
-                        on:click={() => {
-                          // client.reportWord(word.word);
-                          reportWordModal = i;
-                          // deleting word
-                          lockedWords = lockedWords.filter((w) => w !== i);
-                          lockedWords = lockedWords.map((w) => {
-                            if (w > i) {
-                              w = w - 1;
-                            }
-                            return w;
-                          });
-                          isLockedWord = makeIsLockedWordObj();
-                        }}
-                        disabled={isLockedWord[i]}
-                        ><AlertTriangleIcon size="1x" /></button
-                      >
-                    </div>
-
                     <div
                       class="tooltip tooltip-left"
                       data-tip="delete this word"
@@ -296,32 +232,18 @@
               </li>
             {/each}
             {#if isHost}
-              <li class="flex my-2 place-items-center items-center">
-                <button
-                  class="btn btn-primary w-full"
-                  on:click={() => lobby.addWord()}>add word</button
-                >
-              </li>
               <li>
                 <label
                   for="my-modal-2"
-                  class="btn btn-secondary modal-button w-full"
+                  class="btn btn-primary modal-button w-full"
                 >
-                  add custom word
+                  add word
                 </label>
                 <input type="checkbox" id="my-modal-2" class="modal-toggle" />
                 <div class="modal">
                   <div class="modal-box">
-                    <p>add a custom word (use ; for multiple words)</p>
+                    <p>add a word (use ; for multiple words)</p>
                     <div class="mt-5 form-control">
-                      <!-- <label class="cursor-pointer label">
-                        <span class="label-text"
-                          >save for other people to play</span>
-                        <input
-                          type="checkbox"
-                          bind:checked={toggleDatabase}
-                          class="toggle toggle-lg toggle-primary" />
-                      </label> -->
                       <div class="relative">
                         <input
                           type="text"
@@ -331,7 +253,7 @@
                               handleCustomWord();
                             }
                           }}
-                          placeholder="custom word"
+                          placeholder="word"
                           class="w-full input select-auto input-primary input-bordered"
                         />
                         <button
@@ -615,35 +537,7 @@
                         class="toggle"
                       />
                     </label>
-                    <label class="cursor-pointer label">
-                      <span class="label-text">only allow twitch players</span>
-                      <input
-                        type="checkbox"
-                        on:click={() =>
-                          api.game.settings.switchOnlyTwitch(
-                            !$api.game.currentPhase.onlyAuth
-                          )}
-                        checked={$api.game.currentPhase.onlyAuth}
-                        class="toggle"
-                      />
-                    </label>
-                    <label class="cursor-pointer label">
-                      <span class="label-text"
-                        >only allow twitch players to vote (prevents double
-                        voting)</span
-                      >
-                      <input
-                        type="checkbox"
-                        on:click={() =>
-                          api.game.settings.switchAllowEveryoneToVote(
-                            !$api.game.currentPhase.allowEveryoneToVote
-                          )}
-                        checked={!$api.game.currentPhase.allowEveryoneToVote}
-                        class="toggle"
-                      />
-                    </label>
                   {/if}
-
                   <label class="cursor-pointer label">
                     <span class="label-text">toggle theme</span>
                     <div><ThemePicker /></div>
@@ -653,11 +547,11 @@
             </div>
 
             <button
-              disabled={!isHost}
+              disabled={!isHost || !words.length}
               class="btn btn-success my-2"
-              on:click={() => api.game.currentPhase.startGame()}
-              >start game</button
-            >
+              on:click={() => api.game.currentPhase.startGame()}>
+              start game
+            </button>
           </div>
         </div>
         <div
