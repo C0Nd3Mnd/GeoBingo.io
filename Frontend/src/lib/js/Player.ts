@@ -24,21 +24,14 @@ export class Player {
   }
   // TODO: put in helper folder
   getToken() {
-    let session = supabase.auth.session();
-
     let token: string | undefined;
 
-    if (supabase.auth.session()?.access_token) {
-      if (browser) {
-        token = session?.access_token;
-      }
-    } else {
-      try {
-        token = JSON.parse(localStorage.getItem("guestToken"))?.access_token;
-      } catch (e) {
-        console.log(e);
-      }
+    try {
+      token = JSON.parse(localStorage.getItem("guestToken"))?.access_token;
+    } catch (e) {
+      console.log(e);
     }
+
     return token;
   }
 
