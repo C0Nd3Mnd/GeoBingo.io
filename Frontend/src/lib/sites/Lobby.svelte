@@ -148,18 +148,6 @@
 
   <div class="grid gap-5 m-0 lg:grid-cols-2">
     <div>
-      <div class="mb-4 bg-base-100 card bordered shadow-lg">
-        <div class="card-body">
-          <h3 class="card-title">Links</h3>
-          <div class="grid gap-2">
-            <div class="flex gap-2"><Socials /></div>
-            <div>
-              please report bugs and suggestions in the discord server/ on
-              GitHub
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="card bg-base-100 bordered shadow-lg">
         <div class="card-body">
           <h3 class="card-title flex flex-wrap">
@@ -171,8 +159,7 @@
                 >randomize all words</button
               >
               <select
-                on:change={(e) =>
-                  api.game.settings.changeLang(e.target.value)}
+                on:change={(e) => api.game.settings.changeLang(e.target.value)}
                 class="select uppercase w-full max-w-xs border-2 border-black"
               >
                 <option disabled selected>Pick your language</option>
@@ -209,9 +196,7 @@
                         class="btn btn-ghost text-xl"
                         on:click={() => {
                           lockedWords.includes(i)
-                            ? (lockedWords = lockedWords.filter(
-                                (w) => w !== i
-                              ))
+                            ? (lockedWords = lockedWords.filter((w) => w !== i))
                             : lockedWords.push(i);
                           isLockedWord = makeIsLockedWordObj();
                         }}
@@ -425,8 +410,7 @@
             {#if $api.player?.twitch && !lobby.privateLobby}
               <span class="font-normal my-2"
                 >join with <span class="font-bold">!code</span> or
-                <span class="font-bold">!link</span> in chat (GeoBingoBot will
-                answer)</span
+                <span class="font-bold">!link</span> in chat (GeoBingoBot will answer)</span
               >
             {/if}
 
@@ -632,8 +616,7 @@
                       />
                     </label>
                     <label class="cursor-pointer label">
-                      <span class="label-text">only allow twitch players</span
-                      >
+                      <span class="label-text">only allow twitch players</span>
                       <input
                         type="checkbox"
                         on:click={() =>

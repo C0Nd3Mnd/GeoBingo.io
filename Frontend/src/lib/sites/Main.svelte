@@ -32,25 +32,12 @@
     <img class=" rounded-md back shadow-2xl w-1/4" src="cover.png" alt="" />
   </div>
 
-  <div class="p-2">
-    <Socials />
-  </div>
-
   <div class="w-full flex flex-col md:flex-row p-2 justify-center items-center">
     <div class="p-2 flex items-center justify-center">
       {#if $api?.player}
         <Login />
         <!-- {:else}
 		loading -->
-      {/if}
-    </div>
-    <div class="p-2">
-      {#if $api.streamerFrontPage}
-        <StreamerFrontPage streamerFrontPage={$api.streamerFrontPage} />
-      {:else if events.length}
-        <Carousel {events} bind:disabled />
-      {:else}
-        <Discord />
       {/if}
     </div>
   </div>
